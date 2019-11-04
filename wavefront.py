@@ -11,20 +11,20 @@ inicio = [0,0]
 fim = [8,8]
 
 def click(event):
-    global lista
+    global paredes
     item = event.widget
     x=(int(item.place_info()['x'])-1)/tamanho_quadrado
     y=(int(item.place_info()['y'])-1)/tamanho_quadrado
     try:
-        i = lista.index([x,y])
-        lista.remove([x,y])
+        i = paredes.index([x,y])
+        paredes.remove([x,y])
     except Exception:
-        lista.append([x,y])
+        paredes.append([x,y])
     
     Thread(target = calcular).start()
 
 
-def desenhar(pixel,l):
+def colocarparedes(pixel,l):
     for item in l:
         eita = int(item[0]+item[1]*LARGURA)
         pixel[eita]['label'].configure(bg = 'gray')
@@ -87,7 +87,7 @@ def fazerrota(valor):
             
 
 def calcular():
-    global c,lista,pixel,propagacao,todaspropagacao,n
+    global c,paredes,pixel,propagacao,todaspropagacao,n
     n=1
     for item in c.winfo_children():
         item.configure(bg = 'white', text='')
@@ -95,7 +95,7 @@ def calcular():
         item['valor'] = 0;
     
     i = 1
-    desenhar(pixel,lista)
+    colocarparedes(pixel,paredes)
     pixel[inicio[0]+inicio[1]*LARGURA]['label'].configure(bg = 'green')
     pixel[fim[0]+fim[1]*LARGURA]['valor'] = 1
     pixel[fim[0]+fim[1]*LARGURA]['label'].configure(bg = 'red')
@@ -112,7 +112,7 @@ def calcular():
 
 j = Tk()
 j.configure(bg = 'black')
-lista = []
+paredes = []
 
 propagacao = [fim]
 todaspropagacao = [fim]
